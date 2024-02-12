@@ -9,11 +9,12 @@ import CategoriesScreen from "./screens/CategoriesScreen";
 import FavoritesScreen from "./screens/FavoritesScreen";
 import MealDetailsScreen from "./screens/MealDetailsScreen";
 import MealsOverviewScreen from "./screens/MealsOverviewScreen";
+import FavoritesContextProvider from "./store/context/FavoritesContext";
 
 const Stack = createNativeStackNavigator();
 const Drawer = createDrawerNavigator();
 
-function DrawerNavigator(params) {
+function DrawerNavigator() {
   return (
     <Drawer.Navigator
       initialRouteName="User"
@@ -62,44 +63,46 @@ export default function App() {
   return (
     <>
       <StatusBar style="light" />
-      <NavigationContainer>
-        <Stack.Navigator
-          screenOptions={{
-            headerStyle: { backgroundColor: "#1a0b02" },
-            headerTintColor: "white",
-            contentStyle: { backgroundColor: "#4b2812" },
-          }}
-        >
-          <Stack.Screen
-            name="Drawer"
-            component={DrawerNavigator}
-            options={{
-              // title: "All Categories", not needed when we use drawer instead
-              headerShown: false,
+      <FavoritesContextProvider>
+        <NavigationContainer>
+          <Stack.Navigator
+            screenOptions={{
+              headerStyle: { backgroundColor: "#1a0b02" },
+              headerTintColor: "white",
+              contentStyle: { backgroundColor: "#4b2812" },
             }}
-          />
-          <Stack.Screen
-            name="MealsOverview"
-            component={MealsOverviewScreen}
-            // options={({ route, navigation }) => {
-            //   const catId = route.params.categoryId;
-            //   return {
-            //     title: catId,
-            //   };
-            // }}
-          />
-          <Stack.Screen
-            name="MealDetails"
-            component={MealDetailsScreen}
-            options={{
-              title: "About the meal",
-              // headerRight: () => {
-              //   return <Button title="Tap me!" />;
-              // },
-            }}
-          />
-        </Stack.Navigator>
-      </NavigationContainer>
+          >
+            <Stack.Screen
+              name="Drawer"
+              component={DrawerNavigator}
+              options={{
+                // title: "All Categories", not needed when we use drawer instead
+                headerShown: false,
+              }}
+            />
+            <Stack.Screen
+              name="MealsOverview"
+              component={MealsOverviewScreen}
+              // options={({ route, navigation }) => {
+              //   const catId = route.params.categoryId;
+              //   return {
+              //     title: catId,
+              //   };
+              // }}
+            />
+            <Stack.Screen
+              name="MealDetails"
+              component={MealDetailsScreen}
+              options={{
+                title: "About the meal",
+                // headerRight: () => {
+                //   return <Button title="Tap me!" />;
+                // },
+              }}
+            />
+          </Stack.Navigator>
+        </NavigationContainer>
+      </FavoritesContextProvider>
     </>
   );
 }
