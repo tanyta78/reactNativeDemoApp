@@ -1,13 +1,13 @@
 import React, { useContext, useLayoutEffect } from "react";
 import { Image, ScrollView, StyleSheet, Text, View } from "react-native";
 
-import { MEALS } from "../data/dummy-data";
+import { MEALS } from "../../data/dummy-data";
 
-import IconButton from "../components/IconButton";
-import List from "../components/MealDetail/List";
-import Subtitle from "../components/MealDetail/Subtitle";
-import MealDetails from "../components/MealDetails";
-import { FavoritesContext } from "../store/context/FavoritesContext";
+import IconButton from "../../components/IconButton";
+import List from "../../components/MealDetail/List";
+import Subtitle from "../../components/MealDetail/Subtitle";
+import MealDetails from "../../components/MealDetails";
+import { FavoritesContext } from "../../store/context/FavoritesContext";
 
 // using context api
 export default function MealDetailsScreen({ route, navigation }) {
