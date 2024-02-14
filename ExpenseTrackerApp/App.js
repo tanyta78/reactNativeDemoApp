@@ -3,14 +3,17 @@ import { StatusBar } from "expo-status-bar";
 import { StyleSheet } from "react-native";
 
 import Navigation from "./components/Navigation/Navigation";
+import ExpensesContextProvider from "./store/expenses-context";
 
 export default function App() {
   return (
     <>
       <StatusBar style="auto" />
-      <NavigationContainer>
-        <Navigation />
-      </NavigationContainer>
+      <ExpensesContextProvider>
+        <NavigationContainer>
+          <Navigation />
+        </NavigationContainer>
+      </ExpensesContextProvider>
     </>
   );
 }
