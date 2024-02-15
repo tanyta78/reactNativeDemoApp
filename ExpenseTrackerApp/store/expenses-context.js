@@ -1,9 +1,10 @@
 import { createContext, useReducer } from "react";
-import { DUMMY_EXPENSES } from "../constants/dummyExpenses";
+// import { DUMMY_EXPENSES } from "../constants/dummyExpenses";
 import { ExpenseActionType } from "../constants/expenseActionsType";
 
 export const ExpensesContext = createContext({
   expenses: [],
+  setExpenses: (expenses) => {},
   addExpense: ({ description, amount, date }) => {},
   deleteExpense: (id) => {},
   updateExpense: (id, { description, amount, date }) => {},
@@ -12,8 +13,7 @@ export const ExpensesContext = createContext({
 function expensesReducer(state, action) {
   switch (action.type) {
     case ExpenseActionType.ADD:
-      const id = new Date().toString() + Math.random().toString();
-      return [{ ...action.payload, id }, ...state];
+      return [action.payload, ...state];
     case ExpenseActionType.UPDATE:
       const updatedExpenseIndex = state.findIndex(
         (expense) => expense.id === action.payload.id
@@ -25,13 +25,16 @@ function expensesReducer(state, action) {
       return updatedExpenses;
     case ExpenseActionType.DELETE:
       return state.filter((expense) => expense.id !== action.payload);
+    case ExpenseActionType.SET:
+      const expenses = action.payload.reverse();
+      return expenses;
     default:
       return state;
   }
 }
 
 function ExpensesContextProvider({ children }) {
-  const [expensesState, dispatch] = useReducer(expensesReducer, DUMMY_EXPENSES);
+  const [expensesState, dispatch] = useReducer(expensesReducer, []);
 
   function addExpense(expenseData) {
     dispatch({ type: ExpenseActionType.ADD, payload: expenseData });
@@ -45,12 +48,19 @@ function ExpensesContextProvider({ children }) {
       payload: { id, data: expenseData },
     });
   }
+  function setExpenses(expenses) {
+    dispatch({
+      type: ExpenseActionType.SET,
+      payload: expenses,
+    });
+  }
 
   const value = {
     expenses: expensesState,
     addExpense: addExpense,
     deleteExpense: deleteExpense,
     updateExpense: updateExpense,
+    setExpenses: setExpenses,
   };
 
   return (
