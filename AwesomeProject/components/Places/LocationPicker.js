@@ -8,10 +8,10 @@ import React, { useEffect, useState } from "react";
 import { Alert, Image, StyleSheet, Text, View } from "react-native";
 
 import { COLORS } from "../../constants/colors";
-import { getMapPreview } from "../../util/location";
+import { getAddress, getMapPreview } from "../../util/location";
 import OutlinedButton from "../UI/OutlinedButton";
 
-export default function LocationPicker() {
+export default function LocationPicker({ onLocationTaken }) {
   const [pickedLocation, setPickedLocation] = useState();
 
   const navigation = useNavigation();
@@ -26,6 +26,17 @@ export default function LocationPicker() {
       setPickedLocation(mapPickedLocation);
     }
   }, [mapPickedLocation]);
+
+  useEffect(() => {
+    async function handleLocation() {
+      if (pickedLocation) {
+        const address = await getAddress(pickedLocation.lat, pickedLocation.lng);
+        onLocationTaken({...pickedLocation, address});
+      }
+    }
+    
+    handleLocation()
+  }, [pickedLocation, onLocationTaken]);
 
   async function verifyPermission() {
     if (locationPermissionInfo.status === PermissionStatus.UNDETERMINED) {
