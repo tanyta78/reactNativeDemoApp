@@ -10,8 +10,8 @@ export default function PlaceDetails({ route, navigation }) {
 
   function showOnMapHandler() {
     navigation.navigate("Map", {
-      initialLat: fetchedPlace.lat,
-      initialLng: fetchedPlace.lng,
+      initialLat: fetchedPlace.location.lat,
+      initialLng: fetchedPlace.location.lng,
     });
   }
 
