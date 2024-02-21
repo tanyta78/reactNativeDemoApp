@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "NotificationDemoApp",
-    "slug": "NotificationDemoApp",
+    "slug": "notificationapprn",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -31,13 +31,15 @@
         "expo-notifications",
         {
           "icon": "./local/assets/icon.png",
-          "color": "#ffffff",
-          "sounds": [
-            // "./local/assets/notification-sound.wav",
-            // "./local/assets/notification-sound-other.wav"
-          ]
+          "color": "#ffffff"
         }
       ]
-    ]
+    ],
+    "extra": {
+      "eas": {
+        "projectId": "a7a706a0-57a4-4463-a418-9d50da430764"
+      }
+    },
+    "owner": "tanyta78"
   }
 }
