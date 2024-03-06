@@ -1,3 +1,4 @@
+import { Audio } from 'expo-av'
 import { Camera, CameraType } from 'expo-camera'
 import React, { useState } from 'react'
 import { Button, StyleSheet, Text, View } from 'react-native'
@@ -5,16 +6,17 @@ import VideoPlayer from './VideoPlayer'
 
 const VideoRecorder = () => {
   const [permission, requestPermission] = Camera.useCameraPermissions()
+  const [audioPermission, requestAudioPermission] = Audio.usePermissions()
   const [type, setType] = useState(CameraType.back)
   const [camera, setCamera] = useState(null)
   const [record, setRecord] = useState(undefined)
 
-  if (!permission) {
+  if (!permission || !audioPermission) {
     // Camera permissions are still loading
     return <View />
   }
 
-  if (!permission.granted) {
+  if (!permission.granted || !audioPermission.granted) {
     // Camera permissions are not granted yet
     return (
       <View style={styles.container}>
@@ -22,7 +24,10 @@ const VideoRecorder = () => {
           We need your permission to show the camera
         </Text>
         <Button
-          onPress={requestPermission}
+          onPress={async () => {
+            await requestPermission()
+            await requestAudioPermission()
+          }}
           title="grant permission"
         />
       </View>
