@@ -1,38 +1,39 @@
-import React, { useEffect, useState } from "react";
-import { Image, ScrollView, StyleSheet, Text, View } from "react-native";
-import { COLORS } from "../constants/colors";
-import { fetchPlaceDetails } from "../util/database";
-import OutlinedButton from "./../components/UI/OutlinedButton";
+import React, { useEffect, useState } from 'react'
+import { Image, ScrollView, StyleSheet, Text, View } from 'react-native'
+import { COLORS } from '../constants/colors'
+import { fetchPlaceDetails } from '../util/database'
+import Button from './../components/UI/Button'
+import OutlinedButton from './../components/UI/OutlinedButton'
 
 export default function PlaceDetails({ route, navigation }) {
-  const [fetchedPlace, setFetchedPlace] = useState();
-  const selectedPlaceId = route.params.placeId;
+  const [fetchedPlace, setFetchedPlace] = useState()
+  const selectedPlaceId = route.params.placeId
 
   function showOnMapHandler() {
-    navigation.navigate("Map", {
+    navigation.navigate('Map', {
       initialLat: fetchedPlace.location.lat,
-      initialLng: fetchedPlace.location.lng,
-    });
+      initialLng: fetchedPlace.location.lng
+    })
   }
 
   useEffect(() => {
     async function loadPlaceData() {
-      const place = await fetchPlaceDetails(selectedPlaceId);
-      setFetchedPlace(place);
+      const place = await fetchPlaceDetails(selectedPlaceId)
+      setFetchedPlace(place)
       navigation.setOptions({
-        title: place.title,
-      });
+        title: place.title
+      })
     }
 
-    loadPlaceData();
-  }, [selectedPlaceId]);
+    loadPlaceData()
+  }, [selectedPlaceId])
 
   if (!fetchedPlace) {
     return (
       <View style={styles.fallback}>
         <Text>Loading place data...</Text>
       </View>
-    );
+    )
   }
 
   return (
@@ -51,33 +52,36 @@ export default function PlaceDetails({ route, navigation }) {
         >
           View on Map
         </OutlinedButton>
+        <Button onPress={() => navigation.navigate('RecordVideoPlace')}>
+          Record Video
+        </Button>
       </View>
     </ScrollView>
-  );
+  )
 }
 
 const styles = StyleSheet.create({
   fallback: {
     flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
+    justifyContent: 'center',
+    alignItems: 'center'
   },
   image: {
-    height: "35%",
+    height: '35%',
     minHeight: 300,
-    width: "100%",
+    width: '100%'
   },
   locationContainer: {
-    justifyContent: "center",
-    alignItems: "center",
+    justifyContent: 'center',
+    alignItems: 'center'
   },
   addressContainer: {
-    padding: 20,
+    padding: 20
   },
   address: {
     color: COLORS.primary500,
-    textAlign: "center",
-    fontWeight: "bold",
-    fontSize: 16,
-  },
-});
+    textAlign: 'center',
+    fontWeight: 'bold',
+    fontSize: 16
+  }
+})

@@ -1,34 +1,35 @@
-import { NavigationContainer } from "@react-navigation/native";
-import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import AppLoading from "expo-app-loading";
-import { StatusBar } from "expo-status-bar";
-import { useEffect, useState } from "react";
+import { NavigationContainer } from '@react-navigation/native'
+import { createNativeStackNavigator } from '@react-navigation/native-stack'
+import AppLoading from 'expo-app-loading'
+import { StatusBar } from 'expo-status-bar'
+import { useEffect, useState } from 'react'
 
-import IconButton from "./components/UI/IconButton";
-import { COLORS } from "./constants/colors";
-import AddPlace from "./screens/AddPlace";
-import AllPlaces from "./screens/AllPlaces";
-import Map from "./screens/Map";
-import PlaceDetails from "./screens/PlaceDetails";
-import { init } from "./util/database";
+import IconButton from './components/UI/IconButton'
+import { COLORS } from './constants/colors'
+import AddPlace from './screens/AddPlace'
+import AllPlaces from './screens/AllPlaces'
+import Map from './screens/Map'
+import PlaceDetails from './screens/PlaceDetails'
+import RecordVideoPlace from './screens/RecordVideoPlace'
+import { init } from './util/database'
 
-const Stack = createNativeStackNavigator();
+const Stack = createNativeStackNavigator()
 
 export default function App() {
-  const [dbInitialized, setDbInitialized] = useState(false);
+  const [dbInitialized, setDbInitialized] = useState(false)
 
   useEffect(() => {
     init()
       .then(() => {
-        setDbInitialized(true);
+        setDbInitialized(true)
       })
       .catch((err) => {
-        console.log(err);
-      });
-  }, []);
+        console.log(err)
+      })
+  }, [])
 
   if (!dbInitialized) {
-    return <AppLoading />;
+    return <AppLoading />
   }
 
   return (
@@ -39,29 +40,29 @@ export default function App() {
           screenOptions={{
             headerStyle: { backgroundColor: COLORS.primary500 },
             headerTintColor: COLORS.gray700,
-            contentStyle: { backgroundColor: COLORS.gray700 },
+            contentStyle: { backgroundColor: COLORS.gray700 }
           }}
         >
           <Stack.Screen
             name="AllPlaces"
             component={AllPlaces}
             options={({ navigation }) => ({
-              title: "Your Favorite Places",
+              title: 'Your Favorite Places',
               headerRight: ({ tintColor }) => (
                 <IconButton
                   icon="add"
                   size={24}
                   color={tintColor}
-                  onPress={() => navigation.navigate("AddPlace")}
+                  onPress={() => navigation.navigate('AddPlace')}
                 />
-              ),
+              )
             })}
           />
           <Stack.Screen
             name="AddPlace"
             component={AddPlace}
             options={{
-              title: "Add a new Place",
+              title: 'Add a new Place'
             }}
           />
           <Stack.Screen
@@ -72,11 +73,18 @@ export default function App() {
             name="PlaceDetails"
             component={PlaceDetails}
             options={{
-              title: "Loading Place ...",
+              title: 'Loading Place ...'
+            }}
+          />
+          <Stack.Screen
+            name="RecordVideoPlace"
+            component={RecordVideoPlace}
+            options={{
+              title: 'RecordVideoPlace'
             }}
           />
         </Stack.Navigator>
       </NavigationContainer>
     </>
-  );
+  )
 }

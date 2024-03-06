@@ -1,61 +1,16 @@
-import { Camera } from 'expo-camera'
-import React, { useState } from 'react'
-import { StyleSheet, Text, View } from 'react-native'
+import { ResizeMode, Video } from 'expo-av'
+import React from 'react'
+import { StyleSheet, View } from 'react-native'
+import Button from './../UI/Button'
 
-const VideoPlayer = () => {
-  const [hasAudioPermission, setHasAudioPermission] = useState(null)
-  const [hasCameraPermission, setHasCameraPermission] = useState(null)
-  const [camera, setCamera] = useState(null)
-  const [record, setRecord] = useState(null)
-  const [type, setType] = useState(Camera.Constants.Type.back)
+const VideoPlayer = ({
+  record = 'https://d23dyxeqlo5psv.cloudfront.net/big_buck_bunny.mp4'
+}) => {
   const video = React.useRef(null)
   const [status, setStatus] = React.useState({})
 
-  useEffect(() => {
-    const checkPermissions = async () => {
-      const cameraStatus = await Camera.requestPermissionsAsync()
-      setHasCameraPermission(cameraStatus.status === 'granted')
-      const audioStatus = await Camera.requestMicrophonePermissionsAsync()
-      setHasAudioPermission(audioStatus.status === 'granted')
-    }
-    checkPermissions()
-  }, [])
-
-  const takeVideo = async () => {
-    if (camera) {
-      const data = await camera.recordAsync({
-        VideoQuality: ['2160p'],
-        maxDuration: 10,
-        maxFileSize: 200,
-        mute: false,
-        videoBitrate: 5000000
-      })
-      setRecord(data.uri)
-      console.log(data.uri)
-    }
-  }
-
-  const stopVideo = async () => {
-    camera.stopRecording()
-  }
-
-  if (hasCameraPermission === null || hasAudioPermission === null) {
-    return <View />
-  }
-  if (hasCameraPermission === false || hasAudioPermission === false) {
-    return <Text>No access to camera</Text>
-  }
-
   return (
-    <View style={{ flex: 1 }}>
-      <View style={styles.cameraContainer}>
-        <Camera
-          ref={(ref) => setCamera(ref)}
-          style={styles.fixedRatio}
-          type={type}
-          ratio={'4:3'}
-        />
-      </View>
+    <View>
       <Video
         ref={video}
         style={styles.video}
@@ -63,38 +18,19 @@ const VideoPlayer = () => {
           uri: record
         }}
         useNativeControls
-        resizeMode="contain"
+        resizeMode={ResizeMode.CONTAIN}
         isLooping
         onPlaybackStatusUpdate={(status) => setStatus(() => status)}
       />
-      <View style={styles.buttons}>
-        <Button
-          title={status.isPlaying ? 'Pause' : 'Play'}
-          onPress={() =>
-            status.isPlaying
-              ? video.current.pauseAsync()
-              : video.current.playAsync()
-          }
-        />
-      </View>
       <Button
-        title="Flip Video"
-        onPress={() => {
-          setType(
-            type === Camera.Constants.Type.back
-              ? Camera.Constants.Type.front
-              : Camera.Constants.Type.back
-          )
-        }}
-      ></Button>
-      <Button
-        title="Take video"
-        onPress={() => takeVideo()}
-      />
-      <Button
-        title="Stop Video"
-        onPress={() => stopVideo()}
-      />
+        onPress={() =>
+          status?.isPlaying
+            ? video.current.pauseAsync()
+            : video.current.playAsync()
+        }
+      >
+        {status?.isPlaying ? 'Pause' : 'Play'}
+      </Button>
     </View>
   )
 }
@@ -102,22 +38,9 @@ const VideoPlayer = () => {
 export default VideoPlayer
 
 const styles = StyleSheet.create({
-  cameraContainer: {
-    flex: 1,
-    flexDirection: 'row'
-  },
-  fixedRatio: {
-    flex: 1,
-    aspectRatio: 1
-  },
   video: {
     alignSelf: 'center',
     width: 350,
     height: 220
-  },
-  buttons: {
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center'
   }
 })

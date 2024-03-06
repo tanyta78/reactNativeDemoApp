@@ -1,7 +1,7 @@
-import React from "react";
-import { Pressable, StyleSheet, Text } from "react-native";
+import React from 'react'
+import { Pressable, StyleSheet, Text } from 'react-native'
 
-import { COLORS } from "../../constants/colors";
+import { COLORS } from '../../constants/colors'
 
 export default function Button({ onPress, children }) {
   return (
@@ -11,7 +11,7 @@ export default function Button({ onPress, children }) {
     >
       <Text style={styles.text}>{children}</Text>
     </Pressable>
-  );
+  )
 }
 
 const styles = StyleSheet.create({
@@ -21,16 +21,16 @@ const styles = StyleSheet.create({
     margin: 4,
     backgroundColor: COLORS.primary800,
     elevation: 2,
-    shadowColor: "black",
+    shadowColor: 'black',
     shadowOpacity: 0.15,
     shadowOffset: { width: 1, height: 1 },
     shadowRadius: 2,
-    borderRadius: 4,
+    borderRadius: 4
   },
   pressed: { opacity: 0.7 },
   text: {
-    textAlign: "center",
+    textAlign: 'center',
     fontSize: 16,
-    color: COLORS.primary50,
-  },
-});
+    color: COLORS.primary50
+  }
+})
