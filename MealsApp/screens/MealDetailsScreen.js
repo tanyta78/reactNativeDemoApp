@@ -1,28 +1,28 @@
-import React, { useLayoutEffect } from "react";
-import { Image, ScrollView, StyleSheet, Text, View } from "react-native";
-import { useDispatch, useSelector } from "react-redux";
+import React, { useLayoutEffect } from 'react'
+import { Image, ScrollView, StyleSheet, Text, View } from 'react-native'
+import { useDispatch, useSelector } from 'react-redux'
 
-import { MEALS } from "../data/dummy-data";
+import { MEALS } from '../data/dummy-data'
 
-import IconButton from "../components/IconButton";
-import List from "../components/MealDetail/List";
-import Subtitle from "../components/MealDetail/Subtitle";
-import { addFavorite, removeFavorite } from "../store/redux/favorites";
-import MealDetails from "./../components/MealDetails";
+import IconButton from '../components/IconButton'
+import List from '../components/MealDetail/List'
+import Subtitle from '../components/MealDetail/Subtitle'
+import { addFavorite, removeFavorite } from '../store/redux/favorites'
+import MealDetails from './../components/MealDetails'
 
 export default function MealDetailsScreen({ route, navigation }) {
-  const favoriteMealsIds = useSelector((state) => state.favoriteMeals.ids);
-  const dispatch = useDispatch();
+  const favoriteMealsIds = useSelector((state) => state.favoriteMeals.ids)
+  const dispatch = useDispatch()
 
-  const mealId = route.params.mealId;
-  const selectedMeal = MEALS.find((meal) => meal.id === mealId);
-  const isFav = favoriteMealsIds.includes(mealId);
+  const mealId = route.params.mealId
+  const selectedMeal = MEALS.find((meal) => meal.id === mealId)
+  const isFav = favoriteMealsIds.includes(mealId)
 
   function changeFavoriteStateHandler() {
     if (isFav) {
-      dispatch(removeFavorite({ id: mealId }));
+      dispatch(removeFavorite({ id: mealId }))
     } else {
-      dispatch(addFavorite({ id: mealId }));
+      dispatch(addFavorite({ id: mealId }))
     }
   }
 
@@ -32,13 +32,14 @@ export default function MealDetailsScreen({ route, navigation }) {
         return (
           <IconButton
             onPress={changeFavoriteStateHandler}
-            icon={isFav ? "star" : "star-outline"}
+            icon={isFav ? 'star' : 'star-outline'}
             color="white"
+            accessibilityHint={`Toggle favorite status. Current is ${isFav}`}
           />
-        );
-      },
-    });
-  }, [navigation, changeFavoriteStateHandler]);
+        )
+      }
+    })
+  }, [navigation, changeFavoriteStateHandler])
 
   return (
     <ScrollView style={styles.rootContainer}>
@@ -64,31 +65,31 @@ export default function MealDetailsScreen({ route, navigation }) {
         </View>
       </View>
     </ScrollView>
-  );
+  )
 }
 
 const styles = StyleSheet.create({
   rootContainer: {
-    marginBottom: 32,
+    marginBottom: 32
   },
   image: {
-    width: "100%",
-    height: 300,
+    width: '100%',
+    height: 300
   },
   title: {
-    fontWeight: "bold",
+    fontWeight: 'bold',
     fontSize: 24,
-    color: "white",
+    color: 'white',
     margin: 8,
-    textAlign: "center",
+    textAlign: 'center'
   },
   detailedText: {
-    color: "white",
+    color: 'white'
   },
   listOuterContainer: {
-    alignItems: "center",
+    alignItems: 'center'
   },
   listContainer: {
-    width: "80%",
-  },
-});
+    width: '80%'
+  }
+})
