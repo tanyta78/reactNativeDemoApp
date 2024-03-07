@@ -6,6 +6,7 @@ import { Alert, StyleSheet, Text, View } from 'react-native'
 export default function App() {
   const [isBiometricSupported, setIsBiometricSupported] = useState(false)
   const [authenticationResult, setAuthenticationResult] = useState(null)
+  const [isAuth, setIsAuth] = useState(false)
 
   // Check if hardware supports biometrics
   useEffect(() => {
@@ -35,6 +36,7 @@ export default function App() {
 
       if (success) {
         setAuthenticationResult('Authentication successful!')
+        setIsAuth(true)
         //TODO Perform actions after successful authentication
       } else {
         setAuthenticationResult(`Authentication failed. Error: ${error}`)
@@ -56,6 +58,7 @@ export default function App() {
       <TouchableOpacity onPress={handleBiometricAuth}>
         <Text>Authenticate with Touch ID/Face ID</Text>
       </TouchableOpacity>
+      {isAuth && <ContactList />}
       <StatusBar style="auto" />
     </View>
   )
