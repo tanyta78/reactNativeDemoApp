@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState } from 'react'
 import {
   Alert,
   KeyboardAvoidingView,
@@ -6,45 +6,44 @@ import {
   StyleSheet,
   TextInput,
   View,
-  useWindowDimensions,
-} from "react-native";
+  useWindowDimensions
+} from 'react-native'
 
-import Card from "../components/ui/Card";
-import InstructionText from "../components/ui/InstructionText";
-import PrimaryButton from "../components/ui/PrimaryButton";
-import Title from "../components/ui/Title";
+import Card from '../components/ui/Card'
+import InstructionText from '../components/ui/InstructionText'
+import PrimaryButton from '../components/ui/PrimaryButton'
+import Title from '../components/ui/Title'
 
-import { COLORS } from "../constants/color";
+import { COLORS } from '../constants/color'
+import I18n from '../translations/i18n'
 
 export default function StartGameScreen({ onPickNumber }) {
-  const [enteredNumber, setEnteredNumber] = useState("");
+  const [enteredNumber, setEnteredNumber] = useState('')
 
-  const { width, height } = useWindowDimensions();
+  const { width, height } = useWindowDimensions()
 
   function numberInputHandler(enteredText) {
-    setEnteredNumber(enteredText);
+    setEnteredNumber(enteredText)
   }
 
   function resetInputHandler() {
-    setEnteredNumber("");
+    setEnteredNumber('')
   }
 
   function confirmInputHandler() {
-    const chosenNumber = parseInt(enteredNumber);
+    const chosenNumber = parseInt(enteredNumber)
 
     if (isNaN(chosenNumber) || chosenNumber <= 0 || chosenNumber > 99) {
-      Alert.alert(
-        "Invalid number!",
-        "Number has to be a number between 1 and 99",
-        [{ text: "Okay", style: "destructive", onPress: resetInputHandler }]
-      );
-      return;
+      Alert.alert(I18n.t('invalid_number'), I18n.t('invalid_number_msg'), [
+        { text: I18n.t('ok'), style: 'destructive', onPress: resetInputHandler }
+      ])
+      return
     }
 
-    onPickNumber(chosenNumber);
+    onPickNumber(chosenNumber)
   }
 
-  const marginTopDist = height < 380 ? 30 : 100;
+  const marginTopDist = height < 380 ? 30 : 100
 
   return (
     <ScrollView style={styles.screen}>
@@ -53,9 +52,9 @@ export default function StartGameScreen({ onPickNumber }) {
         behavior="position"
       >
         <View style={[styles.rootContainer, { marginTop: marginTopDist }]}>
-          <Title>GUESS MY NUMBER</Title>
+          <Title>{I18n.t('game_title')}</Title>
           <Card>
-            <InstructionText>Enter a number:</InstructionText>
+            <InstructionText>{I18n.t('enter_number')}</InstructionText>
             <TextInput
               style={styles.numberInput}
               maxLength={2}
@@ -67,11 +66,13 @@ export default function StartGameScreen({ onPickNumber }) {
             />
             <View style={styles.buttonsContainer}>
               <View style={styles.buttonContainer}>
-                <PrimaryButton onPress={resetInputHandler}>Reset</PrimaryButton>
+                <PrimaryButton onPress={resetInputHandler}>
+                  {I18n.t('reset')}
+                </PrimaryButton>
               </View>
               <View style={styles.buttonContainer}>
                 <PrimaryButton onPress={confirmInputHandler}>
-                  Confirm
+                  {I18n.t('confirm')}
                 </PrimaryButton>
               </View>
             </View>
@@ -79,19 +80,19 @@ export default function StartGameScreen({ onPickNumber }) {
         </View>
       </KeyboardAvoidingView>
     </ScrollView>
-  );
+  )
 }
 
 // const deviceHeight = Dimensions.get('window').height
 
 const styles = StyleSheet.create({
   screen: {
-    flex: 1,
+    flex: 1
   },
   rootContainer: {
     flex: 1,
     // marginTop: deviceHeight < 380 ? 30 : 100,
-    alignItems: "center",
+    alignItems: 'center'
   },
   numberInput: {
     height: 50,
@@ -101,13 +102,13 @@ const styles = StyleSheet.create({
     borderBottomWidth: 2,
     color: COLORS.accent500,
     marginVertical: 8,
-    fontWeight: "bold",
-    textAlign: "center",
+    fontWeight: 'bold',
+    textAlign: 'center'
   },
   buttonsContainer: {
-    flexDirection: "row",
+    flexDirection: 'row'
   },
   buttonContainer: {
-    flex: 1,
-  },
-});
+    flex: 1
+  }
+})

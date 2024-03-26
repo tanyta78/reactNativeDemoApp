@@ -1,32 +1,33 @@
-import { Ionicons } from "@expo/vector-icons";
-import React, { useState } from "react";
+import { Ionicons } from '@expo/vector-icons'
+import React, { useState } from 'react'
 import {
   Alert,
   FlatList,
   StyleSheet,
   View,
-  useWindowDimensions,
-} from "react-native";
+  useWindowDimensions
+} from 'react-native'
 
-import NumberContainer from "../components/game/NumberContainer";
-import Card from "../components/ui/Card";
-import InstructionText from "../components/ui/InstructionText";
-import PrimaryButton from "../components/ui/PrimaryButton";
-import Title from "../components/ui/Title";
+import NumberContainer from '../components/game/NumberContainer'
+import Card from '../components/ui/Card'
+import InstructionText from '../components/ui/InstructionText'
+import PrimaryButton from '../components/ui/PrimaryButton'
+import Title from '../components/ui/Title'
 
-import GuessLogItem from "../components/game/GuessLogItem";
-import { Directions } from "../constants/enums";
-import { generateRandomNumberBetween } from "../utils/generateRandomNumberBetween";
+import GuessLogItem from '../components/game/GuessLogItem'
+import { Directions } from '../constants/enums'
+import I18n from '../translations/i18n'
+import { generateRandomNumberBetween } from '../utils/generateRandomNumberBetween'
 
-let minBoundary = 1;
-let maxBoundary = 100;
+let minBoundary = 1
+let maxBoundary = 100
 
 export default function GameScreen({ userNumber, onGameOver }) {
-  const initialGuess = generateRandomNumberBetween(1, 100, userNumber);
-  const [currentGuess, setCurrentGuess] = useState(initialGuess);
-  const [guessRounds, setGuessRounds] = useState([initialGuess]);
+  const initialGuess = generateRandomNumberBetween(1, 100, userNumber)
+  const [currentGuess, setCurrentGuess] = useState(initialGuess)
+  const [guessRounds, setGuessRounds] = useState([initialGuess])
 
-  const { width, height } = useWindowDimensions();
+  const { width, height } = useWindowDimensions()
 
   function nextGuessHandler(direction) {
     // direction => 'lower' or 'greater'
@@ -34,33 +35,33 @@ export default function GameScreen({ userNumber, onGameOver }) {
       (direction === Directions.LOWER && currentGuess < userNumber) ||
       (direction === Directions.GREATER && currentGuess > userNumber)
     ) {
-      Alert.alert("Don't lie!", "You know that this is wrong...", [
-        { text: "Sorry!", style: "cancel" },
-      ]);
-      return;
+      Alert.alert(I18n.t('cheat'), I18n.t('cheat_msg'), [
+        { text: I18n.t('sorry'), style: 'cancel' }
+      ])
+      return
     }
 
     if (direction === Directions.LOWER) {
-      maxBoundary = currentGuess;
+      maxBoundary = currentGuess
     } else {
-      minBoundary = currentGuess + 1;
+      minBoundary = currentGuess + 1
     }
     const newRndNumber = generateRandomNumberBetween(
       minBoundary,
       maxBoundary,
       currentGuess
-    );
-    setCurrentGuess(newRndNumber);
-    setGuessRounds((prevRounds) => [newRndNumber, ...prevRounds]);
+    )
+    setCurrentGuess(newRndNumber)
+    setGuessRounds((prevRounds) => [newRndNumber, ...prevRounds])
 
     if (newRndNumber === userNumber) {
-      onGameOver(guessRounds.length);
-      minBoundary = 1;
-      maxBoundary = 100;
+      onGameOver(guessRounds.length)
+      minBoundary = 1
+      maxBoundary = 100
     }
   }
 
-  const guessRoundsListLength = guessRounds.length;
+  const guessRoundsListLength = guessRounds.length
 
   let content = (
     <>
@@ -91,7 +92,7 @@ export default function GameScreen({ userNumber, onGameOver }) {
         </View>
       </Card>
     </>
-  );
+  )
 
   if (width > 500) {
     content = (
@@ -118,7 +119,7 @@ export default function GameScreen({ userNumber, onGameOver }) {
           </View>
         </View>
       </>
-    );
+    )
   }
 
   return (
@@ -141,30 +142,30 @@ export default function GameScreen({ userNumber, onGameOver }) {
         />
       </View>
     </View>
-  );
+  )
 }
 
 const styles = StyleSheet.create({
   rootContainer: {
     flex: 1,
     padding: 24,
-    alignItems: "center",
+    alignItems: 'center'
   },
   instructionText: {
-    marginBottom: 12,
+    marginBottom: 12
   },
   buttonsContainer: {
-    flexDirection: "row",
+    flexDirection: 'row'
   },
-  buttonsContainerWide:{
-    flexDirection: "row",
-    alignItems: "center",
+  buttonsContainerWide: {
+    flexDirection: 'row',
+    alignItems: 'center'
   },
   buttonContainer: {
-    flex: 1,
+    flex: 1
   },
   listContainer: {
     flex: 1,
-    padding: 16,
-  },
-});
+    padding: 16
+  }
+})
